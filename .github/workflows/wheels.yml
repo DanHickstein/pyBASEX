@@ -41,7 +41,9 @@ jobs:
         CIBW_TEST_REQUIRES: "pytest"
         # calling pytest directly uses wrong python;
         # results can be copied to output (with meaningful name) only manually
-        CIBW_TEST_COMMAND: python -m pytest --pyargs abel
+        CIBW_TEST_COMMAND: >
+          python -m pytest --pyargs abel --log-level=WARN &&
+          python {package}/.github/workflows/save-test.py {package} {wheel}
       run: python -m cibuildwheel --output-dir wheels
     - uses: actions/upload-artifact@v4
       with:

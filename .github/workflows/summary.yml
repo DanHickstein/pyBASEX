@@ -1,0 +1,43 @@
+name: Builds summary
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      pack:
+        description: 'Pack sdist and wheels'
+        type: boolean
+        default: false
+        required: false
+
+jobs:
+  summary:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout: .github/workflows/summary.py
+        sparse-checkout-cone-mode: false
+    - run: |
+        gh run download -p 'sdist-${{ github.ref_name }}*' \
+                        -p 'wheels-${{ github.ref_name }}-*'
+      env:
+        GH_TOKEN: ${{ github.token }}
+    - run: cp -v -t . sdist-*/*.json wheels-*/*.json || true
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: SUMMARY
+      run: |
+        python .github/workflows/summary.py
+        python .github/workflows/summary.py md >> $GITHUB_STEP_SUMMARY
+    - name: Pack
+      if: inputs.pack
+      run: |
+        mkdir pkg
+        cp -v -t pkg sdist-*/*.tar.gz wheels-*/*.whl
+    - uses: actions/upload-artifact@v4
+      if: inputs.pack
+      with:
+        name: package-${{ github.ref_name }}
+        path: pkg/*

@@ -1,0 +1,16 @@
+name: Build package
+
+on: workflow_dispatch
+
+jobs:
+  sdist:
+    uses: ./.github/workflows/sdist.yml
+
+  wheels:
+    uses: ./.github/workflows/wheels.yml
+
+  results:
+    needs: [sdist, wheels]
+    uses: ./.github/workflows/summary.yml
+    with:
+      pack: true

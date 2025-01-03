@@ -7,10 +7,10 @@ PyAbel README
 
 .. begin-github-only1
 
-.. image:: https://travis-ci.com/PyAbel/PyAbel.svg?branch=master
-    :target: https://travis-ci.com/PyAbel/PyAbel
-.. image:: https://ci.appveyor.com/api/projects/status/g1rj5f0g7nohcuuo
-    :target: https://ci.appveyor.com/project/PyAbel/PyAbel
+.. image:: https://github.com/PyAbel/PyAbel/actions/workflows/pytest.yml/badge.svg?branch=master&event=push
+    :target: https://github.com/PyAbel/PyAbel/actions/workflows/pytest.yml
+.. image:: https://ci.appveyor.com/api/projects/status/g1rj5f0g7nohcuuo?branch=master&svg=true
+    :target: https://ci.appveyor.com/project/DanHickstein/pyabel/branch/master
 
 **Note:** This readme is best viewed as part of the `PyAbel Documentation <https://pyabel.readthedocs.io/en/latest/readme_link.html>`__.
 

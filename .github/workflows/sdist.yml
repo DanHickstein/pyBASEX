@@ -35,7 +35,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        sparse-checkout: .github/workflows/info.py
+        sparse-checkout: |
+          .github/workflows/info.py
+          .github/workflows/save-test.py
         sparse-checkout-cone-mode: false
     - uses: actions/download-artifact@v4
       with:
@@ -60,4 +62,11 @@ jobs:
     - name: Install pytest
       run: python -m pip install pytest
     - name: TESTS
-      run: python -m pytest -v --pyargs abel
+      run: |
+        python -m pytest -v --pyargs abel --log-level=WARN
+        python .github/workflows/save-test.py \
+               sdist-install-${{ matrix.py-ver }}-${{ matrix.ext }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: sdist-${{ github.ref_name }}-test-${{ matrix.py-ver }}-${{ matrix.ext }}
+        path: sdist*.json
